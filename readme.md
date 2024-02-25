@@ -101,6 +101,62 @@ Developed with Flask and utilizing extensions like Flask-Migrate and Flask-Cachi
 
 - **Performance Optimization**: The current design decisions around caching and database access aim to optimize performance, but ongoing monitoring and profiling would be necessary to identify and address potential bottlenecks as the application scales.
 
+# ShortURL Service API Documentation
+
+## Overview
+This document outlines the API for a ShortURL service developed with Flask. The service provides functionalities to shorten URLs, redirect to the original URLs using their short versions, and gather statistics about URL usage.
+
+### Environment Setup
+- The application uses environment variables for configuration, loaded from a `.env` file.
+- `FLASK_ENV` determines the running mode of the application (development or production).
+- Other relevant environment variables include `DATABASE_URL` for the database connection and `BASE_URL` for constructing short URLs.
+
+### Initialization
+- Flask and Flask-Migrate are used for application setup and database migrations.
+- A caching mechanism is initialized for optimizing redirects and access statistics.
+- The database schema is automatically created on the first request if it does not exist.
+
+## API Endpoints
+
+### POST /shorten
+Create a short URL from a given long URL.
+
+- **Payload**: JSON object containing `{"long_url": "http://example.com"}`.
+- **Response**: JSON object with `short_url` containing the shortened URL.
+- **Status Codes**:
+  - 201 Created: Successfully created the short URL.
+  - 400 Bad Request: Missing `long_url` in the request body.
+
+### GET /\<short_code>
+Redirect to the original URL based on the provided short code.
+
+- **URL Parameter**: `short_code` is the short code part of the URL.
+- **Response**: HTTP 302 redirection to the original long URL.
+- **Status Codes**:
+  - 302 Found: Redirect to the original URL.
+  - 404 Not Found: Short code does not exist.
+
+### GET /stats/\<short_code>
+Provides statistics for a short URL: accesses in the last 24 hours, past week, and all time.
+
+- **URL Parameter**: `short_code` is the short code part of the URL for which statistics are requested.
+- **Response**: JSON object containing statistics about URL accesses.
+- **Status Codes**:
+  - 200 OK: Successfully retrieved statistics.
+  - 404 Not Found: Short code does not exist.
+
+## Running the Application
+- For production: The application can be served using Waitress with `serve(app, host='0.0.0.0', port=5000)`.
+- For development: The Flask built-in server can be used with `app.run(debug=True)`.
+
+## Dependencies
+- Flask for the web framework.
+- Flask-Migrate for database migrations.
+- Flask-Caching for caching responses.
+- Waitress as a production WSGI server.
+- Python-dotenv for loading environment variables.
+
+Ensure all dependencies are installed using `pip` to run the application successfully.
 
 ## Building and Running the System
 
@@ -167,7 +223,7 @@ Ensure your project's environment is correctly configured by creating and popula
 
 Ensure your virtual environment is active, then install the required dependencies:
 ```bash
-pip install flask flask_sqlalchemy flask_migrate flask_caching python-dotenv waitress psycopg2-binary
+pip install -r requirements.txt
 ```
 
 ## Step 4: Database Migration
@@ -193,7 +249,7 @@ Set up the database schema before running the application:
   ```bash
    waitress-serve --listen=*:5000 main:app
   ```
-  Replace `'5000 main:app'` with the appropriate function that returns your Flask app instance.
+  Modify the port number in the curl commands if your application is running on a different port.
 
 ## Testing the System
 
@@ -237,9 +293,6 @@ Here's how you can test each of these functionalities using curl from the comman
 - Always activate your virtual environment before working on the project.
 - Keep your `.env` file secure and away from version control.
 - Adjust database connection strings as per your setup.
-- Ensure your Flask application is running before executing these curl commands. You can run your application using `flask run` if you're in development mode or your production server command if in production mode.
-- If you're testing a production deployment remotely, replace `http://localhost:5000` with the actual URL of your deployed application.
-- Modify the port number in the curl commands if your application is running on a different port.
 - Depending on your Flask configuration and the environment it's running in, you might need to adjust these curl commands, especially the URL part, to match your actual setup.
 
 These curl commands will help you interact with your Flask application from the command line, allowing you to test its functionality without needing a frontend interface.
