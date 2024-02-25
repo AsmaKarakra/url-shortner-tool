@@ -7,8 +7,12 @@ __pycache__/
 # Virtual environment
 env/
 .env
+\venv
 # Instance folder
 instance/
+
+#migration for db
+\migrations
 
 # IDE specific files
 .vscode/

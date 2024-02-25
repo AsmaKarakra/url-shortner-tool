@@ -158,6 +158,7 @@ Ensure your project's environment is correctly configured by creating and popula
 
    ```plaintext
    FLASK_ENV=production
+   FLASK_APP = "app/main.py"
    DATABASE_URL=postgresql://postgres:123456789@localhost/postgres
    SECRET_KEY=your_secret_key
    BASE_URL=http://localhost:5000/
@@ -173,11 +174,7 @@ pip install flask flask_sqlalchemy flask_migrate flask_caching python-dotenv wai
 
 Set up the database schema before running the application:
 
-1. Set the `FLASK_APP` environment variable to your main application file (e.g., `main.py`):
-   ```bash
-   export FLASK_APP=main.py
-   ```
-2. Execute the database migration commands:
+1. Execute the database migration commands:
    ```bash
    flask db init
    flask db migrate
@@ -187,16 +184,16 @@ Set up the database schema before running the application:
 ## Step 5: Running the Application
 
 - **For development**:
-  Set `FLASK_ENV=development` in your `.env` file for debug-enabled development mode, then start the application:
+  Set `FLASK_ENV=development` in your `.env` file for debug-enabled development mode, then start the application in the root of your project directory:
   ```bash
   flask run
   ```
 - **For production**:
-  Ensure `FLASK_ENV=production` in your `.env` file, then use `waitress` as a WSGI server:
+  Ensure `FLASK_ENV=production` in your `.env` file, then use `waitress` as a WSGI server, and naviagte to 'app' folder:
   ```bash
-  waitress-serve --call 'main:create_app'
+   waitress-serve --listen=*:5000 main:app
   ```
-  Replace `'main:create_app'` with the appropriate function that returns your Flask app instance.
+  Replace `'5000 main:app'` with the appropriate function that returns your Flask app instance.
 
 ## Testing the System
 
@@ -221,10 +218,10 @@ Here's how you can test each of these functionalities using curl from the comman
    Assuming the previous step provided you with a short code, you can test the redirect functionality by simply accessing the short code path. For example, if the short code is `abcd123`, you would use:
 
    ```sh
-   curl -L http://localhost:5000/abcd123
+   curl -I http://localhost:5000/abcd123
    ```
 
-   This command sends a GET request to the specified short code path. The `-L` flag tells curl to follow redirects, which is necessary to test that the redirection to the long URL is working correctly.
+   A successful redirect will show a 302 status code followed by a Location header indicating the target URL. Using -I will show the headers only, which is useful for quickly checking the redirect without loading the full content.
 
 3. **Testing the URL Statistics Endpoint**
 
