@@ -4,10 +4,6 @@
 
 A Flask-based URL shortener service designed to offer functionalities for shortening URLs, redirecting to original URLs via short links, and tracking URL access statistics.
 
-## System Overview
-
-Developed with Flask and utilizing extensions like Flask-Migrate and Flask-Caching, this application supports both development and production environments, configurable via a `.env` file.
-
 ## Features
 
 - **URL Shortening**: Generate a short, unique alias for a given URL.
@@ -245,7 +241,13 @@ Set up the database schema before running the application:
   flask run
   ```
 - **For production**:
-  Ensure `FLASK_ENV=production` in your `.env` file, then use `waitress` as a WSGI server, and naviagte to 'app' folder:
+  Ensure `FLASK_ENV=production` in your `.env` file, then use `waitress` as a WSGI server. 
+  
+  naviagte to 'app' folder:
+   ```bash
+   cd app
+  ```
+  Run the following command in your powershell terminal: 
   ```bash
    waitress-serve --listen=*:5000 main:app
   ```
@@ -295,6 +297,5 @@ Here's how you can test each of these functionalities using curl from the comman
 - Adjust database connection strings as per your setup.
 - Depending on your Flask configuration and the environment it's running in, you might need to adjust these curl commands, especially the URL part, to match your actual setup.
 
-These curl commands will help you interact with your Flask application from the command line, allowing you to test its functionality without needing a frontend interface.
 
 
