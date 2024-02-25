@@ -285,7 +285,7 @@ git clone https://github.com/AsmaKarakra/url-shortner-tool.git
 2. Navigate to your project directory.
 3. Create a virtual environment:
    ```bash
-   python3 -m venv venv
+   python -m venv venv
    ```
 4. Activate the virtual environment:
    - On Windows:
@@ -324,7 +324,8 @@ Set up the database schema before running the application:
 1. Execute the database migration commands:
    ```bash
    flask db init
-   flask db migrate
+   flask db migrate  
+   flask db upgrade  
    ```
 
 ## Step 5: Running the Application

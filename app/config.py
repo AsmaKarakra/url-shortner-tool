@@ -1,5 +1,6 @@
 import os
 
+
 class Config:
     """
     Base configuration class. Subclasses include configurations specific
@@ -12,14 +13,15 @@ class Config:
 
 class DevelopmentConfig(Config):
     """Development-specific configuration."""
-    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///dev.db')
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'postgresql://postgres:123456789@localhost/postgres')
 
 class TestingConfig(Config):
     """Testing-specific configuration."""
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///testing.db'
+    SQLALCHEMY_DATABASE_URI = os.getenv('TEST_DATABASE_URL', 'postgresql://postgres:123456789@localhost/postgres')
     TESTING = True
 
 class ProductionConfig(Config):
     """Production-specific configuration."""
-    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///prod.db')
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'postgresql://postgres:123456789@localhost/postgres')
+
 
